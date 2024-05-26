@@ -822,7 +822,7 @@ impl Context for *mut context {
     let len = text.len();
     let ptr = unsafe { sqlite_alloc(len) };
     unsafe {
-      core::ptr::copy_nonoverlapping(text.as_ptr(), ptr as *mut u8, len);
+      core::ptr::copy_nonoverlapping(text.as_ptr(), ptr as *mut _, len);
     }
     result_text(
       *self,
@@ -862,7 +862,7 @@ impl Context for *mut context {
     let len = blob.len();
     let ptr = unsafe { sqlite_alloc(len) };
     unsafe {
-      core::ptr::copy_nonoverlapping(blob.as_ptr(), ptr as *mut u8, len);
+      core::ptr::copy_nonoverlapping(blob.as_ptr(), ptr as *mut _, len);
     }
     result_blob(
       *self,
@@ -979,7 +979,7 @@ impl Stmt for *mut stmt {
     let len = val.len();
     let ptr = unsafe { sqlite_alloc(len) };
     unsafe {
-      core::ptr::copy_nonoverlapping(val.as_ptr(), ptr as *mut u8, len);
+      core::ptr::copy_nonoverlapping(val.as_ptr(), ptr as *mut _, len);
     }
     convert_rc(bind_blob(
       *self,
@@ -1016,7 +1016,7 @@ impl Stmt for *mut stmt {
     let len = text.len();
     let ptr = unsafe { sqlite_alloc(len) };
     unsafe {
-      core::ptr::copy_nonoverlapping(text.as_ptr(), ptr as *mut u8, len);
+      core::ptr::copy_nonoverlapping(text.as_ptr(), ptr as *mut _, len);
     }
     convert_rc(bind_text(
       *self,
@@ -1264,7 +1264,7 @@ pub fn copy_into_sqlite_mem_cstring(s: CString) -> *mut c_char {
   // add null terminator
   let ptr = unsafe { sqlite_alloc(len + 1) };
   unsafe {
-    core::ptr::copy_nonoverlapping(s.as_ptr(), ptr as *mut i8, len);
+    core::ptr::copy_nonoverlapping(s.as_ptr(), ptr as *mut _, len);
   }
   // add null terminator
   unsafe { ptr.add(len).write(0) };
@@ -1276,7 +1276,7 @@ pub fn into_sqlite_mem_cstring(s: &str) -> *mut c_char {
   // add null terminator
   let ptr = unsafe { sqlite_alloc(len + 1) };
   unsafe {
-    core::ptr::copy_nonoverlapping(s.as_ptr(), ptr as *mut u8, len);
+    core::ptr::copy_nonoverlapping(s.as_ptr(), ptr as *mut _, len);
   }
   // add null terminator
   unsafe { ptr.add(len).write(0) };
