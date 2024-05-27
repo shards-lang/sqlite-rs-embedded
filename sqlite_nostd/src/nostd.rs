@@ -8,7 +8,8 @@ use core::array::TryFromSliceError;
 use core::cell::{BorrowError, BorrowMutError};
 use core::ffi::{c_char, c_int, c_void, CStr};
 use core::ptr::null_mut;
-use core::{error::Error, slice, str::Utf8Error};
+use core::{slice, str::Utf8Error};
+use std::error::Error;
 
 #[cfg(not(feature = "std"))]
 use num_derive::FromPrimitive;
